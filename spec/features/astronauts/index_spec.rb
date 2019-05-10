@@ -3,14 +3,22 @@ require 'rails_helper'
 RSpec.describe "As a visitor, " do
   describe "when I visit '/astronauts'" do
     before :each do
-      @mission = Mission.create!(title: "Mission 1", time_in_space: 3)
+      @mission_1 = Mission.create!(title: "Mission 1", time_in_space: 1)
+      @mission_2 = Mission.create!(title: "Mission 2", time_in_space: 2)
 
-      @astronaut_1 = @mission.astronauts.create!(name: "Astronaut 1", age: 31, job: "Job 1")
-      @astronaut_2 = @mission.astronauts.create!(name: "Astronaut 2", age: 32, job: "Job 2")
-      @astronaut_3 = @mission.astronauts.create!(name: "Astronaut 3", age: 33, job: "Job 3")
+      @astronaut_1 = Astronaut.create!(name: "Astronaut 1", age: 31, job: "Job 1")
+      @astronaut_2 = Astronaut.create!(name: "Astronaut 2", age: 32, job: "Job 2")
+      @astronaut_3 = Astronaut.create!(name: "Astronaut 3", age: 33, job: "Job 3")
+
+      AstronautMission.create!(astronaut: @astronaut_1, mission: @mission_1)
+      AstronautMission.create!(astronaut: @astronaut_2, mission: @mission_1)
+      AstronautMission.create!(astronaut: @astronaut_3, mission: @mission_1)
+
+      AstronautMission.create!(astronaut: @astronaut_1, mission: @mission_2)
+      AstronautMission.create!(astronaut: @astronaut_2, mission: @mission_2)
     end
     it "I see a list of astronauts and their attributes" do
-    # binding.pry
+
       visit astronauts_path
 
       within "#astronauts-index-#{@astronaut_1.id}" do
